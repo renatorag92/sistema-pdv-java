@@ -1,0 +1,14 @@
+# Compilados
+/build/
+/dist/
+*.class
+
+# NetBeans arquivos privados
+/nbproject/private/
+
+# Logs
+*.log
+
+# Arquivos serializados
+*.ser
+
