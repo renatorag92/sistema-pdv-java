@@ -9,6 +9,7 @@ import com.sistema.mercadinho.dao.ClienteDAO;
 import com.sistema.mercadinho.model.Cliente;
 import java.awt.Component;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,7 +29,7 @@ public class TelaListaClientes extends javax.swing.JFrame {
             instancia = new TelaListaClientes();
             instancia.setLocationRelativeTo(parent);
             instancia.setVisible(true);
-            
+
         } else {
             instancia.setVisible(true); // Garante que não esteja invisível
             instancia.setExtendedState(javax.swing.JFrame.NORMAL); // Desminimiza se estiver minimizada
@@ -80,6 +81,10 @@ public class TelaListaClientes extends javax.swing.JFrame {
         tblClientes = new javax.swing.JTable();
         btnCadastrarNovo = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnLimparBusca = new javax.swing.JButton();
+        txtCpf = new javax.swing.JFormattedTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -121,24 +126,58 @@ public class TelaListaClientes extends javax.swing.JFrame {
             }
         });
 
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        btnLimparBusca.setText("Limpar");
+        btnLimparBusca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparBuscaActionPerformed(evt);
+            }
+        });
+
+        try {
+            txtCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtCpf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCpfActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("CPF:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCadastrarNovo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExcluir))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(359, 359, 359)
-                            .addComponent(jLabel1))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(99, 99, 99)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(359, 359, 359)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(99, 99, 99)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCadastrarNovo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnExcluir))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBuscar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnLimparBusca)))))
                 .addContainerGap(122, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -146,13 +185,19 @@ public class TelaListaClientes extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscar)
+                    .addComponent(btnLimparBusca)
+                    .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrarNovo)
                     .addComponent(btnExcluir))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -176,9 +221,9 @@ public class TelaListaClientes extends javax.swing.JFrame {
         String cpf = tblClientes.getValueAt(linhaSelecionada, 1).toString();
 
         int opcao = JOptionPane.showConfirmDialog(this,
-            "Tem certeza que deseja excluir o cliente do CPF: " + cpf + "?",
-            "Excluir Funcionário",
-            JOptionPane.YES_NO_OPTION);
+                "Tem certeza que deseja excluir o cliente do CPF: " + cpf + "?",
+                "Excluir Funcionário",
+                JOptionPane.YES_NO_OPTION);
 
         if (opcao == JOptionPane.YES_OPTION) {
             // 4. Chama o DAO para excluir
@@ -197,12 +242,66 @@ public class TelaListaClientes extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnExcluirActionPerformed
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
+        String cpfDigitado = txtCpf.getText();
+
+//        String cpfLimpo = cpfDigitado.replace(".", "").replace("-", "").replace(" ", "").trim();
+
+        DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
+        modelo.setNumRows(0);
+
+        ClienteDAO dao = new ClienteDAO();
+
+        if (cpfDigitado.isEmpty()) {
+            for (Cliente c : dao.listarTodos()) {
+                modelo.addRow(new Object[]{
+                    c.getNome(),
+                    c.getCPF(),
+                    c.getTelefone(),
+                    c.getEndereco()
+                });
+            }
+        } else {
+            
+            Cliente clienteEncontrado = dao.consultar(cpfDigitado);
+
+            if (clienteEncontrado != null) {
+                modelo.addRow(new Object[]{
+                    clienteEncontrado.getNome(),
+                    clienteEncontrado.getCPF(),
+                    clienteEncontrado.getTelefone(),
+                    clienteEncontrado.getEndereco()
+                });
+            } else {
+                JOptionPane.showMessageDialog(this, "Cliente não encontrado para o CPF: " + cpfDigitado);
+                txtCpf.setText("");
+                preencherTabela();
+            }
+        }
+
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnLimparBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparBuscaActionPerformed
+        txtCpf.setText("");
+        preencherTabela();
+        txtCpf.requestFocus();
+    }//GEN-LAST:event_btnLimparBuscaActionPerformed
+
+    private void txtCpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCpfActionPerformed
+
+    }//GEN-LAST:event_txtCpfActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCadastrarNovo;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnLimparBusca;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblClientes;
+    private javax.swing.JFormattedTextField txtCpf;
     // End of variables declaration//GEN-END:variables
 }

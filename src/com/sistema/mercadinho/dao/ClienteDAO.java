@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -28,6 +29,17 @@ public class ClienteDAO {
         if (dadosClientes.isEmpty()) {
             carregarDados();
         }
+    }
+    
+    public List<Cliente> filtrarPorCpf(ClienteDAO cpfBuscado) {
+        List<Cliente> resultado = new ArrayList<>();
+        
+        for (Cliente cliente : dadosClientes.values()) {
+            if (cliente.getCPF().equals(cpfBuscado)) {
+                resultado.add(cliente);
+            }
+        }
+        return resultado;
     }
 
     public HashMap<String, Cliente> getDadosClientes() {
