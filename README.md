@@ -27,6 +27,21 @@ Essa abordagem foi adotada para priorizar a aplicação de conceitos de POO e or
 
 ---
 
+## 📷 Screenshots
+
+### Tela de Venda
+![Tela Venda](docs/images/TelaVenda.png)
+
+## Tela Cadastro de Produto
+
+![Tela Cadastro Produto](docs/images/TelaCadastroProduto.png)
+
+# Tela de Pagamento
+
+![Tela Pagamento](docs/images/TelaPagamento.png)
+
+---
+
 ## ▶ Como executar
 
 1. Abrir o projeto no NetBeans
